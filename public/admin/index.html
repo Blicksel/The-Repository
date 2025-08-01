@@ -6,10 +6,18 @@
     <title>Blicksel Picks CMS</title>
   </head>
   <body>
-    <script src="https://unpkg.com/netlify-cms-app@^2.0.0/dist/netlify-cms.js"></script>
+    <!-- Carrega Netlify CMS -->
+    <script src="https://unpkg.com/netlify-cms-app@^2.0.0/dist/netlify-cms.js" defer></script>
+
+    <!-- Inicializa CMS depois do carregamento -->
     <script>
-      window.CMS_MANUAL_INIT = true;
-      CMS.init();
+      window.addEventListener("load", function () {
+        if (window.CMS) {
+          CMS.init();
+        } else {
+          console.error("CMS not found after load");
+        }
+      });
     </script>
   </body>
 </html>
