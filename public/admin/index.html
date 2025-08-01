@@ -1,19 +1,4 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Blicksel Picks CMS</title>
-  </head>
-  <body>
-    <!-- Carrega a versão correta do Netlify CMS -->
-    <script src="https://unpkg.com/netlify-cms-app@^2.15.72/dist/netlify-cms.js"></script>
-    <script>
-      if (window.CMS) {
-        window.CMS.init();
-      } else {
-        console.error("Netlify CMS script did not load.");
-      }
-    </script>
-  </body>
-</html>
+<script src="/admin/netlify-cms.js"></script>
+<script>
+  window.CMS.init();
+</script>
