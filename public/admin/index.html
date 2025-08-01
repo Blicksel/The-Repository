@@ -6,16 +6,14 @@
     <title>Blicksel Picks CMS</title>
   </head>
   <body>
-    <!-- Carrega Netlify CMS e inicializa -->
-    <script src="https://unpkg.com/netlify-cms-app@^2.0.0/dist/netlify-cms.js" defer></script>
-    <script defer>
-      document.addEventListener("DOMContentLoaded", function () {
-        if (window.CMS) {
-          window.CMS.init();
-        } else {
-          console.error("Netlify CMS script did not load.");
-        }
-      });
+    <!-- Carrega a versão correta do Netlify CMS -->
+    <script src="https://unpkg.com/netlify-cms-app@^2.15.72/dist/netlify-cms.js"></script>
+    <script>
+      if (window.CMS) {
+        window.CMS.init();
+      } else {
+        console.error("Netlify CMS script did not load.");
+      }
     </script>
   </body>
 </html>
