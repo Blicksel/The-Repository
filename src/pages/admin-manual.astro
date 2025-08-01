@@ -1,0 +1,133 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout
+  title="Admin Panel User Manual | Blicksel Picks"
+  description="Complete guide for managing content through the Blicksel Picks admin panel"
+  noIndex={true}
+>
+  <Header />
+  
+  <main class="min-h-screen bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div class="bg-white rounded-lg shadow-sm p-8 md:p-12">
+        <div class="text-center mb-8">
+          <h1 class="text-4xl font-bold text-gray-900 mb-4">📚 Admin Panel User Manual</h1>
+          <p class="text-xl text-gray-600">Complete guide for managing your website content</p>
+        </div>
+        
+        <div class="prose prose-lg max-w-none">
+          <div class="bg-blue-50 border-l-4 border-blue-400 p-6 mb-8">
+            <h2 class="text-xl font-semibold text-blue-900 mb-2">🚀 Quick Start</h2>
+            <p class="text-blue-800 mb-4">
+              Ready to start managing your content? Here's how to get started:
+            </p>
+            <ol class="text-blue-800 space-y-2">
+              <li><strong>Access Admin Panel:</strong> <a href="/admin" class="text-blue-600 hover:text-blue-700 font-medium">https://picks.blicksel.com/admin</a></li>
+              <li><strong>Login:</strong> Click "Login with GitHub"</li>
+              <li><strong>Start Creating:</strong> Add your first blog post or review</li>
+            </ol>
+          </div>
+          
+          <h2>📖 Complete Manual</h2>
+          <p>
+            The complete user manual is available in your GitHub repository. This comprehensive guide covers:
+          </p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+            <div class="bg-gray-50 p-6 rounded-lg">
+              <h3 class="font-semibold text-gray-900 mb-3">📝 Content Management</h3>
+              <ul class="text-gray-600 space-y-1 text-sm">
+                <li>• Creating and editing blog posts</li>
+                <li>• Managing product reviews</li>
+                <li>• Organizing categories</li>
+                <li>• SEO optimization</li>
+              </ul>
+            </div>
+            
+            <div class="bg-gray-50 p-6 rounded-lg">
+              <h3 class="font-semibold text-gray-900 mb-3">⚙️ Site Configuration</h3>
+              <ul class="text-gray-600 space-y-1 text-sm">
+                <li>• Homepage customization</li>
+                <li>• Navigation management</li>
+                <li>• Contact information</li>
+                <li>• Social media settings</li>
+              </ul>
+            </div>
+            
+            <div class="bg-gray-50 p-6 rounded-lg">
+              <h3 class="font-semibold text-gray-900 mb-3">🎨 Best Practices</h3>
+              <ul class="text-gray-600 space-y-1 text-sm">
+                <li>• Writing guidelines</li>
+                <li>• Image optimization</li>
+                <li>• Affiliate link management</li>
+                <li>• Content strategy</li>
+              </ul>
+            </div>
+            
+            <div class="bg-gray-50 p-6 rounded-lg">
+              <h3 class="font-semibold text-gray-900 mb-3">🔧 Troubleshooting</h3>
+              <ul class="text-gray-600 space-y-1 text-sm">
+                <li>• Common issues</li>
+                <li>• Support contacts</li>
+                <li>• Emergency procedures</li>
+                <li>• Technical help</li>
+              </ul>
+            </div>
+          </div>
+          
+          <h2>📍 Access Methods</h2>
+          
+          <div class="space-y-4">
+            <div class="border border-gray-200 rounded-lg p-4">
+              <h3 class="font-semibold text-gray-900 mb-2">🌐 GitHub Repository</h3>
+              <p class="text-gray-600 mb-2">View the complete manual in your repository:</p>
+              <a href="https://github.com/Blicksel/Novo/blob/main/ADMIN_MANUAL.md" 
+                 target="_blank" 
+                 class="text-primary-600 hover:text-primary-700 font-medium">
+                View ADMIN_MANUAL.md on GitHub →
+              </a>
+            </div>
+            
+            <div class="border border-gray-200 rounded-lg p-4">
+              <h3 class="font-semibold text-gray-900 mb-2">📱 Raw Text Version</h3>
+              <p class="text-gray-600 mb-2">Direct link to the manual content:</p>
+              <a href="https://raw.githubusercontent.com/Blicksel/Novo/main/ADMIN_MANUAL.md" 
+                 target="_blank" 
+                 class="text-primary-600 hover:text-primary-700 font-medium">
+                View Raw Manual →
+              </a>
+            </div>
+            
+            <div class="border border-gray-200 rounded-lg p-4">
+              <h3 class="font-semibold text-gray-900 mb-2">💻 Local Development</h3>
+              <p class="text-gray-600 mb-2">If you have the project locally:</p>
+              <code class="bg-gray-100 px-2 py-1 rounded text-sm">open ADMIN_MANUAL.md</code>
+            </div>
+          </div>
+          
+          <div class="bg-green-50 border-l-4 border-green-400 p-6 mt-8">
+            <h3 class="text-lg font-semibold text-green-900 mb-2">💡 Pro Tip</h3>
+            <p class="text-green-800">
+              Bookmark the GitHub link for easy access to the manual. It's always up-to-date and 
+              accessible from anywhere!
+            </p>
+          </div>
+          
+          <h2>🆘 Need Help?</h2>
+          <p>If you have questions about using the admin panel:</p>
+          <ul>
+            <li><strong>Check the Manual:</strong> Most questions are covered in the complete guide</li>
+            <li><strong>Contact Support:</strong> <a href="/contact" class="text-primary-600 hover:text-primary-700">Use the contact form</a></li>
+            <li><strong>GitHub Issues:</strong> Report technical problems in the repository</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <Footer />
+</BaseLayout>

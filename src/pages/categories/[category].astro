@@ -1,0 +1,250 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import DynamicIcon from '../../components/DynamicIcon.astro';
+
+export async function getStaticPaths() {
+  // Get all blog posts
+  const blogPosts = await getCollection('blog');
+  
+  // Get all categories from CMS
+  const categories = await getCollection('categories');
+  
+  // Create a map of category slugs to category data
+  const categoryMap = new Map();
+  categories.forEach(cat => {
+    categoryMap.set(cat.data.slug, cat.data);
+  });
+  
+  // Get unique categories from blog posts and create paths
+  const categorySet = new Set();
+  blogPosts.forEach(post => {
+    if (post.data.category) {
+      // Convert category name to slug format
+      const categorySlug = post.data.category.toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/&/g, 'and');
+      categorySet.add(categorySlug);
+    }
+  });
+  
+  // Create paths for each category
+  return Array.from(categorySet).map(categorySlug => {
+    // Get posts for this category
+    const categoryPosts = blogPosts.filter(post => {
+      const postCategorySlug = post.data.category.toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/&/g, 'and');
+      return postCategorySlug === categorySlug;
+    });
+    
+    // Get category data from CMS or create default
+    const categoryData = categoryMap.get(categorySlug) || {
+      title: categorySlug.split('-').map(word => 
+        word.charAt(0).toUpperCase() + word.slice(1)
+      ).join(' '),
+      description: `Discover the best products and reviews in the ${categorySlug.replace('-', ' ')} category.`,
+      icon: 'star',
+      colorClass: 'bg-blue-100 text-blue-800',
+      productCount: categoryPosts.length
+    };
+    
+    return {
+      params: { category: categorySlug },
+      props: { 
+        categoryData,
+        posts: categoryPosts,
+        categorySlug
+      }
+    };
+  });
+}
+
+const { categoryData, posts, categorySlug } = Astro.props;
+
+// Format posts for BlogCard component
+const formattedPosts = posts.map(post => ({
+  title: post.data.title,
+  description: post.data.description,
+  image: post.data.image || "https://images.pexels.com/photos/4112236/pexels-photo-4112236.jpeg?auto=compress&cs=tinysrgb&w=800",
+  url: `/blog/${post.slug}`,
+  category: post.data.category,
+  date: post.data.publishDate,
+  readingTime: Math.ceil(post.body.split(' ').length / 200) || 5,
+  featured: post.data.featured || false
+}));
+
+// Sort posts by date (newest first)
+formattedPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
+---
+
+<BaseLayout
+  title={`${categoryData.title} - Product Reviews & Buying Guides | Blicksel Picks`}
+  description={categoryData.description}
+>
+  <Header />
+  
+  <main class="min-h-screen bg-gray-50">
+    <!-- Hero Section -->
+    <section class="bg-white shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div class="text-center">
+          <!-- Breadcrumb -->
+          <nav class="flex items-center justify-center space-x-2 text-sm text-gray-500 mb-8">
+            <a href="/" class="hover:text-primary-600">Home</a>
+            <span>/</span>
+            <a href="/categories" class="hover:text-primary-600">Categories</a>
+            <span>/</span>
+            <span class="text-gray-900">{categoryData.title}</span>
+          </nav>
+          
+          <div class="flex justify-center mb-6">
+            <div class={`w-20 h-20 ${categoryData.colorClass.replace('text-', 'bg-').replace('-800', '-100')} rounded-2xl flex items-center justify-center`}>
+              <DynamicIcon name={categoryData.icon} class="w-10 h-10 text-gray-700" />
+            </div>
+          </div>
+          
+          <h1 class="text-5xl font-bold text-gray-900 mb-6">
+            {categoryData.title}
+          </h1>
+          
+          <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            {categoryData.description}
+          </p>
+          
+          <div class="flex justify-center space-x-4">
+            <span class={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium ${categoryData.colorClass}`}>
+              {posts.length} {posts.length === 1 ? 'article' : 'articles'}
+            </span>
+            <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
+              Updated regularly
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Posts Grid -->
+    {posts.length > 0 ? (
+      <section class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {formattedPosts.map(post => (
+              <BlogCard {...post} />
+            ))}
+          </div>
+        </div>
+      </section>
+    ) : (
+      <!-- No Posts State -->
+      <section class="py-20">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div class="bg-white rounded-lg shadow-sm p-12">
+            <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-8">
+              <DynamicIcon name="pen" class="w-12 h-12 text-gray-400" />
+            </div>
+            
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">
+              Coming Soon!
+            </h2>
+            
+            <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+              We're working hard to bring you comprehensive reviews and recommendations for {categoryData.title.toLowerCase()}. 
+              Our team is currently testing products and preparing detailed content.
+            </p>
+            
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
+              <h3 class="text-lg font-semibold text-blue-900 mb-2">What's Coming</h3>
+              <ul class="text-blue-800 space-y-2 text-left max-w-md mx-auto">
+                <li class="flex items-start">
+                  <svg class="w-5 h-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                  </svg>
+                  Detailed product reviews and comparisons
+                </li>
+                <li class="flex items-start">
+                  <svg class="w-5 h-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                  </svg>
+                  Expert buying guides and recommendations
+                </li>
+                <li class="flex items-start">
+                  <svg class="w-5 h-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                  </svg>
+                  Best deals and price tracking
+                </li>
+                <li class="flex items-start">
+                  <svg class="w-5 h-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                  </svg>
+                  User reviews and ratings
+                </li>
+              </ul>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+              <a href="/blog" class="btn-primary text-lg px-8 py-3">
+                Browse Latest Reviews
+              </a>
+              <a href="/categories" class="btn-accent text-lg px-8 py-3">
+                Explore All Categories
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    )}
+    
+    <!-- Related Categories -->
+    <section class="py-16 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">Explore Other Categories</h2>
+          <p class="text-lg text-gray-600">Discover more product reviews and buying guides</p>
+        </div>
+        
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <a href="/categories/electronics" class="text-center p-6 rounded-lg hover:bg-gray-50 transition-colors">
+            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+              <DynamicIcon name="smartphone" class="w-6 h-6 text-blue-600" />
+            </div>
+            <h3 class="font-medium text-gray-900">Electronics</h3>
+          </a>
+          
+          <a href="/categories/smart-home" class="text-center p-6 rounded-lg hover:bg-gray-50 transition-colors">
+            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+              <DynamicIcon name="home" class="w-6 h-6 text-green-600" />
+            </div>
+            <h3 class="font-medium text-gray-900">Smart Home</h3>
+          </a>
+          
+          <a href="/categories/kitchen" class="text-center p-6 rounded-lg hover:bg-gray-50 transition-colors">
+            <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+              <DynamicIcon name="utensils" class="w-6 h-6 text-red-600" />
+            </div>
+            <h3 class="font-medium text-gray-900">Kitchen</h3>
+          </a>
+          
+          <a href="/categories/health-and-fitness" class="text-center p-6 rounded-lg hover:bg-gray-50 transition-colors">
+            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+              <DynamicIcon name="heart" class="w-6 h-6 text-purple-600" />
+            </div>
+            <h3 class="font-medium text-gray-900">Health & Fitness</h3>
+          </a>
+        </div>
+        
+        <div class="text-center mt-8">
+          <a href="/categories" class="btn-primary">
+            View All Categories
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <Footer />
+</BaseLayout>

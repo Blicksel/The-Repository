@@ -1,0 +1,22 @@
+{
+  "email": "contact@blicksel-picks.com",
+  "phone": "",
+  "address": "",
+  "socialMedia": {
+    "facebook": "https://facebook.com/blicksel-picks",
+    "twitter": "https://twitter.com/blicksel-picks",
+    "instagram": "https://instagram.com/blicksel-picks"
+  },
+  "contactForm": {
+    "enabled": true,
+    "emailTo": "contact@blicksel-picks.com",
+    "subjects": [
+      "Product Review Request",
+      "General Inquiry",
+      "Partnership Opportunity",
+      "Website Feedback",
+      "Error Report",
+      "Other"
+    ]
+  }
+}

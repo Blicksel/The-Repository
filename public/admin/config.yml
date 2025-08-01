@@ -1,0 +1,102 @@
+backend:
+  name: github
+  repo: Blicksel/The-Repository
+  branch: main
+  app_id: Ov23lisxNiRKk2DXBjXt
+  auth_type: implicit
+  base_url: https://api.netlify.com
+  auth_endpoint: auth
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "blog"
+    label: "Blog Posts"
+    folder: "src/content/blog"
+    create: true
+    slug: "{slug}"
+    fields:
+      - { name: "title", label: "Title", widget: "string" }
+      - { name: "description", label: "Description", widget: "text" }
+      - { name: "image", label: "Image", widget: "image", required: false }
+      - { name: "category", label: "Category", widget: "string" }
+      - { name: "tags", label: "Tags", widget: "list" }
+      - { name: "author", label: "Author", widget: "string" }
+      - { name: "publishDate", label: "Publish Date", widget: "datetime" }
+      - { name: "body", label: "Body", widget: "markdown" }
+
+  - name: "reviews"
+    label: "Product Reviews"
+    folder: "src/content/reviews"
+    create: true
+    slug: "{slug}"
+    fields:
+      - { name: "title", label: "Title", widget: "string" }
+      - { name: "description", label: "Description", widget: "text" }
+      - { name: "image", label: "Image", widget: "image", required: false }
+      - { name: "category", label: "Category", widget: "string" }
+      - { name: "rating", label: "Rating", widget: "number", min: 1, max: 5 }
+      - { name: "price", label: "Price", widget: "string" }
+      - { name: "amazonUrl", label: "Amazon URL", widget: "string" }
+      - { name: "pros", label: "Pros", widget: "list" }
+      - { name: "cons", label: "Cons", widget: "list" }
+      - { name: "bestFor", label: "Best For", widget: "string" }
+      - { name: "author", label: "Author", widget: "string" }
+      - { name: "publishDate", label: "Publish Date", widget: "datetime" }
+      - { name: "body", label: "Body", widget: "markdown" }
+
+  - name: "categories"
+    label: "Categories"
+    folder: "src/content/categories"
+    create: true
+    slug: "{slug}"
+    fields:
+      - { name: "title", label: "Title", widget: "string" }
+      - { name: "description", label: "Description", widget: "text" }
+      - { name: "icon", label: "Icon", widget: "string" }
+      - { name: "colorClass", label: "Color Class", widget: "string" }
+      - { name: "featured", label: "Featured", widget: "boolean" }
+      - { name: "productCount", label: "Product Count", widget: "number" }
+
+  - name: "homepage"
+    label: "Homepage"
+    files:
+      - file: "src/content/homepage/main.json"
+        label: "Main Homepage"
+        name: "homepage"
+        fields:
+          - { name: "hero", label: "Hero Section", widget: "object", fields: [
+            { name: "title", label: "Title", widget: "string" },
+            { name: "subtitle", label: "Subtitle", widget: "string" }
+          ]}
+
+  - name: "navigation"
+    label: "Navigation"
+    files:
+      - file: "src/content/navigation/main.json"
+        label: "Main Navigation"
+        name: "navigation"
+        fields:
+          - { name: "header", label: "Header Links", widget: "list", fields: [
+            { name: "name", label: "Name", widget: "string" },
+            { name: "url", label: "URL", widget: "string" }
+          ]}
+
+  - name: "settings"
+    label: "Site Settings"
+    files:
+      - file: "src/content/settings/main.json"
+        label: "Settings"
+        name: "settings"
+        fields:
+          - { name: "title", label: "Site Title", widget: "string" }
+          - { name: "description", label: "Description", widget: "text" }
+
+  - name: "contact"
+    label: "Contact"
+    files:
+      - file: "src/content/contact/main.json"
+        label: "Contact"
+        name: "contact"
+        fields:
+          - { name: "email", label: "Email", widget: "string" }
